@@ -1,0 +1,18 @@
+def Sequential_Search(List,item):
+  index = 0
+  found = False
+  
+  while(not found and index < len(List)):
+    if(item == List[index]):
+      found = True
+    else:
+      index = index+1
+  return index
+List = (5,10,15,20,25,30,35,40,45,50)
+item = int(input("請輸入一個想尋找的整數："))
+data = Sequential_Search(List,item)
+
+if data == -1:
+  print("此數不在數列中")
+else:
+  print(str(data))
