@@ -1,0 +1,25 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+	int a,b,c;
+	cout<<"輸入身高 體重:"<<endl;
+	cin>>b;
+	cin>>c;	
+	b=b/100;
+	b=b*b;
+	a=c/b;
+
+	cout<<"BMI="<<a<<endl;	
+	
+	if (a<18.5)
+	cout<<"體重過輕"<<endl;
+	if (a<24)
+	cout<<"合適的體重"<<endl;
+	else
+	cout<<"你好ㄅ健康"<<endl; 
+	
+	system("Pause");
+	return 0;
+	
+ } 
