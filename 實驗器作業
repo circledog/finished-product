@@ -1,0 +1,42 @@
+int SEG[8]={12,11,10,9, 8,7,6,5}; //宣告顯示接腳
+int D[5]={22,23,24,25,26};        //宣告掃描接腳與閃秒點接腳
+int disp[8]={1,2,3,4,5,6,7,8};            //宣告所要顯示的數字
+byte code7[16]={  0xC0,0xF9,0xA4,0xB0,  0x99,0x92,0x82,0xD8,//宣告編碼陣列
+        0x80,0x98,0x88,0x83,  0xC6,0xA1,0x86,0x8E};
+        
+//初始設定
+void setup() {
+  for(int i=0;i<8;i++) {  
+    pinMode(SEG[i], OUTPUT);      //設定各段LED接腳為輸出接腳
+    digitalWrite(SEG[i], 1);      //設定各段LED接腳之初始狀態(不亮)
+  }
+  for(int i=0;i<5;i++) {  
+    pinMode(D[i], OUTPUT);        //設定掃描接腳與閃秒接腳為輸出接腳
+    digitalWrite(D[i], 1);        //設定掃描接腳與閃秒接腳之初始狀態(不亮)
+  }
+}
+
+//主程式
+void loop() {
+  for(int j=0;j<255;j++){
+  for(int i=0;i<4;i++) {  
+    byte tmp=code7[disp[3-i]];    //取出顯示碼
+    for(int j=0;j<8;j++)  
+      digitalWrite(SEG[j],bitRead(tmp,j));  //輸出顯示碼
+    digitalWrite(D[i], 0);        //輸出掃描碼
+    delay(1);                     //持續顯示1ms
+    digitalWrite(D[i], 1);        //關閉掃描碼
+  }
+  }
+   for(int j=0;j<255;j++){
+    for(int i=0;i<4;i++) {  
+    byte tmp=code7[disp[7-i]];    //取出顯示碼
+    for(int j=0;j<8;j++)  
+      digitalWrite(SEG[j],bitRead(tmp,j));  //輸出顯示碼
+    digitalWrite(D[i], 0);        //輸出掃描碼
+    delay(1);                     //持續顯示1ms
+    digitalWrite(D[i], 1);        //關閉掃描碼
+    }
+  }
+  delay(500);
+  }
