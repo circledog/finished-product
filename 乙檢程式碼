@@ -1,0 +1,57 @@
+Public Class Form1
+    Dim u As New HID
+    Dim ss(7) As Byte
+    Dim a, c, nn As Integer
+    Dim b() As Integer = {1, 2, 4, 8, 16, 32, 64, 128, 0}
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+        TextBox1.Text = vbNewLine & "Current Time:" & TimeString
+        If u.OpenHIDDevice(&H1234, &H6789) Then
+            For i = 0 To 7
+                ShapeContainer1.Shapes(i).FillColor = Color.DarkRed
+                ShapeContainer1.Shapes(i + 8).FillColor = Color.DarkGreen
+            Next
+            ss(0) = 0 : ss(1) = 0
+            u.HIDSetReport(ss)
+            ss(1) = 16
+            u.HIDSetReport(ss)
+            If a = 1 Then
+                ss(0) = b(c) : ss(1) = 0
+                u.HIDSetReport(ss)
+            End If
+            If a = 2 And c < 8 Then
+                ss(0) = 2 ^ c : ss(1) = 32
+                u.HIDSetReport(ss)
+                ss(1) = 48
+                u.HIDSetReport(ss)
+            End If
+        Else
+            For i = 0 To 7
+                ShapeContainer1.Shapes(i).FillColor = Color.Transparent
+                ShapeContainer1.Shapes(i + 8).FillColor = Color.Transparent
+            Next
+        End If
+        nn = ss(0)
+        For i = 0 To 7
+            If nn Mod 2 = 1 And a = 2 Then ShapeContainer1.Shapes(i).fillColor = Color.Red
+            If nn Mod 2 = 1 And a = 1 Then ShapeContainer1.Shapes(i + 8).fillColor = Color.LightGreen
+            nn >>= 1
+        Next
+        If c < b.Length - 1 Then c += 1
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        a = 1
+        c = 0
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        a = 2
+        c = 0
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        a = 3
+        Call Timer1_Tick(1, e)
+        End
+    End Sub
+End Class
